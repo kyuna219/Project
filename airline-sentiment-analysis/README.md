@@ -154,9 +154,9 @@ airline-sentiment-analysis/
 
 ## 🙋‍♀️ Author 
 
+Yuna Kim
 - Email: kyuna219@gmail.com
 - LinkedIn: [https://www.linkedin.com/in/yuna-kim-/](https://www.linkedin.com/in/yuna-kim-/)
-- GitHub: [github.com/datawithyuna](https://github.com/datawithyuna)
 - 📌 Note: The dataset was originally obtained from a course project. Some inconsistencies or limitations may exist.
 
 ## 🖼️ Power BI Dashboard
