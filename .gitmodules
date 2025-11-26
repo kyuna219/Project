@@ -3,3 +3,6 @@
 [submodule "wifi-product-pipeline"]
 	path = wifi-product-pipeline
 	url = https://github.com/kyuna219/wifi-product-pipeline.git
+[submodule "wifi-pipeline"]
+	path = wifi-pipeline
+	url = https://github.com/kyuna219/wifi-product-pipeline.git
