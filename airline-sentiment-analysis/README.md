@@ -1,163 +1,132 @@
-# ✈️ Airline Sentiment Analysis
+# Airline Sentiment Analysis
 
-## 📚 Table of Contents
-1. [📌 Overview](#-overview)
-2. [🧹 Data Preparation](#-data-preparation)
-3. [📊 Exploratory Data Analysis](#-exploratory-data-analysis)
-4. [🤖 Modeling](#-modeling)
-5. [📈 Evaluation](#-evaluation)
-6. [🔍 Feature Importance](#-feature-importance)
-7. [✅ Results Summary](#-results-summary)
-8. [💡 Future Improvements](#-future-improvements)
-9. [📁 Project Structure](#-project-structure)
-10. [🙋‍♀️ Author](#-author)
-11. [🖼️ Power BI Dashboard](#-power-bi-dashboard)
+A machine learning and data analytics project exploring airline customer feedback from Twitter. The project uses text-derived features and classification models to predict positive, neutral, or negative sentiment.
 
-## 📌 Overview
+## Project Overview
 
-This project analyzes the sentiment of airline customers from Twitter comment data using machine learning models.  
+- **Dataset:** 14,640 tweets
+- **Target:** `airline_sentiment` (positive, neutral, negative)
+- **Project period:** March–April 2024
+- **Course:** MGSC 410, Chapman University
+- **Best model:** Tuned Random Forest
+- **Best test accuracy:** **67.4%**
 
-- **Problem Statement**:  
-  Airline companies frequently receive customer feedback on platforms like Twitter.  
-  These tweets reflect public opinion but are unstructured and voluminous, making it difficult for companies to understand and respond to them systematically.
+## Workflow
 
-- **Goal**:  
-  This project aims to **build a machine learning model that can automatically classify the sentiment (positive, neutral, negative) of a tweet**, enabling better real-time monitoring of customer opinions.
+1. Prepare and clean the tweet dataset.
+2. Explore sentiment patterns across airlines and complaint themes.
+3. Engineer text-derived and time-based features.
+4. Train baseline classification models.
+5. Tune selected models with GridSearchCV.
+6. Evaluate model performance and feature importance.
+7. Present findings through charts and a Power BI dashboard.
 
-- **Main Tools**:  
-  Python, pandas, scikit-learn, TextBlob
+## Data Preparation & Feature Engineering
 
-- **Results Summary**:  
-  The best-performing model was a Random Forest classifier (after hyperparameter tuning),  
-  achieving **67.4% test accuracy**. Negative tweets were predicted most accurately, while neutral tweets were hardest to classify.
+The documented preparation steps include:
 
-- **Project Duration**:  
-  March – April 2024 (Chapman Course Project for MGSC 410)
-  
+- Removing features with more than 30% missing values.
+- One-hot encoding the `airline` variable.
+- Converting `tweet_created` into numeric date and time features.
+- Applying TextBlob to calculate:
+  - **Polarity:** direction and strength of sentiment.
+  - **Subjectivity:** how subjective or opinion-based the text is.
 
-## 🧹 Data Preparation
+The documented predictors are `date`, `time`, `airline`, `polarity`, and `subjectivity`; the target is `airline_sentiment`.
 
-* **Dataset**: 14,640 tweets
+## Exploratory Data Analysis
 
-* **Preprocessing**: 
+Findings documented in the project:
 
-	* Dropped features with >30% null values.
+- Negative sentiment is the largest sentiment group.
+- United Airlines has the highest volume of negative tweets in this dataset.
+- Poor customer service is a frequent complaint theme.
 
-	* One-hot encoded the `airline` variable.
+![Sentiment distribution](results/exploratory-analysis-1.png)
 
-	* Converted time format of `tweet_created` variable into numeric `date` and `time` columns. 
+![Negative tweets by airline](results/exploratory-analysis-2.png)
 
-	* Used sentiment analysis library, TextBlob, to extract `polarity` (positive or negative) and `subjectivity` (factual or opinionated) scores from tweet text.
+![Common complaint themes](results/exploratory-analysis-3.png)
 
-* **Target**: `airline_sentiment`
+## Modeling
 
-* **Predictors**: `date`, `time`, `airline`, `polarity`, and `subjectivity`. 
+Models compared:
 
+- Logistic Regression
+- Decision Tree
+- Random Forest
 
-## 📊 Exploratory Data Analysis
+GridSearchCV was used to tune the Decision Tree and Random Forest models.
 
-* Most tweets express **negative sentiment**. 
+| Model | Test accuracy before tuning | Test accuracy after tuning |
+|---|---:|---:|
+| Logistic Regression | 63.8% | 63.8% |
+| Decision Tree | 57.7% | 66.7% |
+| Random Forest | 63.2% | **67.4%** |
 
-![Exploratory Analysis 1](results/exploratory-analysis-1.png)
+The tuned Random Forest achieved the highest test accuracy. Its training accuracy was 72.0%, compared with 67.4% on the test set.
 
-* **United Airlines** has the most negative tweets.
+## Evaluation
 
-![Exploratory Analysis 2](results/exploratory-analysis-2.png)
+The selected Random Forest model was evaluated using accuracy, a confusion matrix, and classification metrics.
 
-* Most common complaint: **poor customer service**.
+- Negative tweets were classified most successfully.
+- Neutral tweets were the most difficult category, with lower precision/recall than the other classes.
 
-![Exploratory Analysis 3](results/exploratory-analysis-3.png)
+![Confusion matrix](results/confusion-metrics.png)
 
-## 🤖 Modeling
+![Classification metrics](results/classification-metrics.png)
 
-- Trained three machine learning models:
-  - Logistic Regression
-  - Decision Tree
-  - Random Forest
-- Used **GridSearchCV** for hyperparameter tuning.
+## Feature Importance
 
-* Before hyperparameter tuning:
+The three most important features in the Random Forest model were:
 
-| Model               | Train Accuracy| Test Accuracy |
-|---------------------|---------------|---------------|
-| Logistic Regression | 62.1%         | 63.8%         |
-| Decision Tree       | 99.9%         | 57.7%         |
-| Random Forest       | 99.9%         | 63.2%         |
+1. Polarity
+2. Time of tweet
+3. Subjectivity
 
-* After hyperparameter tuning:
+![Feature importance](results/feature-importance.png)
 
-| Model               | Train Accuracy | Test Accuracy |
-|---------------------|----------------|---------------|
-| Logistic Regression | 62.1%          | 63.8%         |
-| Decision Tree       | 69.1%          | 66.7%         |
-| Random Forest       | **72.0%**      | **67.4%**     |
+## Key Takeaways
 
-- Random Forest outperformed others after tuning.
+- Tuned Random Forest performed best, with 67.4% test accuracy.
+- TextBlob polarity and subjectivity, together with tweet timing, were useful predictive features.
+- Neutral sentiment was comparatively difficult to classify, leaving room to improve feature representation and class-level performance.
 
+Accuracy is a summary metric; class-level evaluation matters because performance differs across sentiment categories.
 
-## 📈 Evaluation
+## Future Improvements
 
-- Evaluated random forest model performance with accuracy, confusion matrix, and classification metrics.
+- Compare TextBlob features with TF-IDF, n-grams, or transformer embeddings.
+- Investigate class imbalance and evaluate resampling or class-weighting.
+- Add cross-validation and further error analysis by airline and sentiment.
+- Explore deployment through a lightweight API or interactive application.
 
-- **Negative tweets** were easiest to classify.
+## Project Structure
 
-![Confusion Metrics](results/confusion-metrics.png)
-
-- **Neutral tweets** had the lowest precision/recall, likely due to class imbalance.
-
-![Classification Metrics](results/classification-metrics.png)
-
-
-## 🔍 Feature Importance
-
-Random Forest’s top features:
-1. **Polarity**
-2. **Time of tweet**
-3. **Subjectivity**
-
-![Feature Importance](results/feature-importance.png)
-
-
-## ✅ Results Summary
-
-- The **best model** was a **Random Forest classifier** with hyperparameter tuning.
-- **Test accuracy**: **67.4%**
-- The model predicted **negative tweets** most accurately.
-- Top 3 predictive features:
-  1. Polarity
-  2. Time of tweet
-  3. Subjectivity
-  
-
-## 💡 Future Improvements
-
-- Use **TF-IDF**, `CountVectorizer`, or **BERT embeddings** instead of TextBlob.
-
-- Balance the dataset to improve prediction of neutral/positive classes.
-
-- Deploy the model as a REST API using **Flask** or **FastAPI**.
-
-- Build a real-time dashboard with **Streamlit**.
-
-
-## 📁 Project Structure 
-
-<pre><code>
+```text
 airline-sentiment-analysis/
 ├── data/         # Dataset (Tweets.csv)
-├── notebooks/    # Jupyter notebook for EDA & modeling
-├── results/      # Visualizations (charts, screenshots)
-├── docs/         # Presentation & appendix files
-├── misc/         # R project or others
-└── README.md     # Project summary
-</code></pre>
+├── notebooks/    # Jupyter notebooks for EDA and modeling
+├── results/      # Charts and evaluation visuals
+├── docs/         # Presentation and appendix files
+├── misc/         # Supporting files
+└── README.md
+```
 
-## 🙋‍♀️ Author 
+## Dashboard
 
-Yuna Kim
-- Email: kyuna219@gmail.com
-- LinkedIn: [https://www.linkedin.com/in/yuna-kim-/](https://www.linkedin.com/in/yuna-kim-/)
-- 📌 Note: The dataset was originally obtained from a course project. Some inconsistencies or limitations may exist.
+[Open the Power BI dashboard](https://app.powerbi.com/view?r=eyJrIjoiYmVlOWI4NjgtNjM4Zi00ZDkwLWE3ZmEtNDRiYThiZTA3OTUwIiwidCI6IjgwOTkyOWFmLTJkMjUtNDViZi05ODM3LTA4OWViOWNmYmQwMSIsImMiOjZ9).
 
-## 🖼️ Power BI Dashboard
-- PowerBI: [https://app.powerbi.com/view?r=eyJrIjoiYmVlOWI4NjgtNjM4Zi00ZDkwLWE3ZmEtNDRiYThiZTA3OTUwIiwidCI6IjgwOTkyOWFmLTJkMjUtNDViZi05ODM3LTA4OWViOWNmYmQwMSIsImMiOjZ9]
+## Tools
+
+Python, Pandas, TextBlob, scikit-learn, GridSearchCV, Power BI.
+
+## Author
+
+**Yuna Kim**
+
+- [GitHub](https://github.com/kyuna219)
+- [LinkedIn](https://www.linkedin.com/in/yuna-kim-/)
+
+*This project was originally completed as a course project. Findings reflect the supplied course dataset and should be interpreted within that context.*
